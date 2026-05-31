@@ -9,7 +9,7 @@ export const authAPI = baseAPI.injectEndpoints({
         method: 'POST',
         data: credentials,
       }),
-      invalidatesTags: (result, error) => error ? [] : ['Auth'],
+      invalidatesTags: (_, error) => error ? [] : ['Auth'],
     }),
     logout: builder.mutation<{ message: string }, void>({
       query: () => ({
