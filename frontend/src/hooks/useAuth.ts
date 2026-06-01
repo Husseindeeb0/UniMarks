@@ -1,4 +1,4 @@
-import { useCheckAuthQuery } from '../state/services/authAPI';
+import { useCheckAuthQuery } from "../state/services/authAPI";
 
 export const useAuth = () => {
   const query = useCheckAuthQuery(undefined);
