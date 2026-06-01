@@ -13,6 +13,8 @@ import cookieParser from "cookie-parser";
 
 dotenv.config();
 
+const PORT = process.env.PORT || 3000;
+
 const app = express();
 app.use(cors(corsOptions));
 app.use(cookieParser());
@@ -27,6 +29,6 @@ app.use("/courseEnrollment", courseEnrollmentRouter);
 app.use("/teacherCourse", teacherCourseRouter);
 app.use("/mark", markRouter);
 
-app.listen(3000, () => {
-    console.log(`Server is running on port 3000`)
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
 })
