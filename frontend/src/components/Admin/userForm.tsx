@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import { useCreateUserMutation } from "../../state/services/userAPI";
 import { UserPlus, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
-const CreateUserForm = () => {
+interface CreateUserFormProps {
+  fixedRole?: "TEACHER" | "STUDENT";
+}
+
+const CreateUserForm = ({ fixedRole }: CreateUserFormProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"TEACHER" | "STUDENT">("STUDENT");
+  const [role, setRole] = useState<"TEACHER" | "STUDENT">(
+    fixedRole || "STUDENT",
+  );
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -24,13 +30,17 @@ const CreateUserForm = () => {
 
     try {
       await createUser({ name, email, password, role }).unwrap();
-      setSuccessMsg(`Successfully created ${role.toLowerCase()} user "${name}"!`);
+      setSuccessMsg(
+        `Successfully created ${role.toLowerCase()} user "${name}"!`,
+      );
       setName("");
       setEmail("");
       setPassword("");
     } catch (err: any) {
       console.error(err);
-      setErrorMsg(err?.data?.message || "Failed to create user. Please try again.");
+      setErrorMsg(
+        err?.data?.message || "Failed to create user. Please try again.",
+      );
     }
   };
 
@@ -42,7 +52,9 @@ const CreateUserForm = () => {
         </div>
         <div>
           <h3 className="text-lg font-bold text-gray-900">Create Account</h3>
-          <p className="text-xs text-gray-500">Register new students or teachers</p>
+          <p className="text-xs text-gray-500">
+            Register new students or teachers
+          </p>
         </div>
       </div>
 
@@ -103,35 +115,37 @@ const CreateUserForm = () => {
           />
         </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-            Role
-          </label>
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setRole("STUDENT")}
-              className={`py-2 px-3 rounded-xl border text-sm font-medium transition-all ${
-                role === "STUDENT"
-                  ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm shadow-blue-50"
-                  : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
-              }`}
-            >
-              Student
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole("TEACHER")}
-              className={`py-2 px-3 rounded-xl border text-sm font-medium transition-all ${
-                role === "TEACHER"
-                  ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm shadow-blue-50"
-                  : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
-              }`}
-            >
-              Teacher
-            </button>
+        {!fixedRole && (
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+              Role
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setRole("STUDENT")}
+                className={`py-2 px-3 rounded-xl border text-sm font-medium transition-all ${
+                  role === "STUDENT"
+                    ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm shadow-blue-50"
+                    : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Student
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole("TEACHER")}
+                className={`py-2 px-3 rounded-xl border text-sm font-medium transition-all ${
+                  role === "TEACHER"
+                    ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm shadow-blue-50"
+                    : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Teacher
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         <button
           type="submit"

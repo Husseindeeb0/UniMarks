@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../state/services/authAPI";
 import { useAuth } from "../../hooks/useAuth";
-import { GraduationCap, Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
+import {
+  GraduationCap,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  AlertCircle,
+} from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");

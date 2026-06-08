@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useLogoutMutation } from "../../state/services/authAPI";
 import { GraduationCap, LogIn, LogOut, Loader2 } from "lucide-react";
@@ -7,6 +7,11 @@ const Navbar = () => {
   const { isAuthenticated, user } = useAuth();
   const [logoutMutation, { isLoading: isLoggingOut }] = useLogoutMutation();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
 
   const handleLogout = async () => {
     try {

@@ -1,10 +1,15 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoutes";
 import { useAuth } from "./hooks/useAuth";
 import Loader from "./components/Loader";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./pages/AdminDashboard";
+import StudentManagement from "./pages/AdminDashboard/studentManagement";
+import TeacherManagement from "./pages/AdminDashboard/teacherManagement";
+import CourseManagement from "./pages/AdminDashboard/courseManagement";
+import EnrollmentManagement from "./pages/AdminDashboard/enrollmentManagement";
+import AssignmentManagement from "./pages/AdminDashboard/assignmentManagment";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import StudentMarks from "./pages/StudentMarks";
 
@@ -38,7 +43,14 @@ function App() {
                 <AdminDashboard />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<Navigate to="/admin/students" replace />} />
+            <Route path="students" element={<StudentManagement />} />
+            <Route path="teachers" element={<TeacherManagement />} />
+            <Route path="courses" element={<CourseManagement />} />
+            <Route path="enrollment" element={<EnrollmentManagement />} />
+            <Route path="assignments" element={<AssignmentManagement />} />
+          </Route>
 
           <Route
             path="/teacher"

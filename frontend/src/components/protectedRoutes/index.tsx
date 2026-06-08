@@ -20,7 +20,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (user?.role === 'ADMIN') {
-    if (location.pathname !== '/admin') {
+    if (!location.pathname.startsWith('/admin')) {
       return <Navigate to="/admin" />;
     }
   } else if (user?.role === 'TEACHER') {
