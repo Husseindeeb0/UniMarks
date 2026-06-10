@@ -5,11 +5,11 @@ import Loader from "./components/Loader";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./pages/AdminDashboard";
-import StudentManagement from "./pages/AdminDashboard/studentManagement";
-import TeacherManagement from "./pages/AdminDashboard/teacherManagement";
-import CourseManagement from "./pages/AdminDashboard/courseManagement";
-import EnrollmentManagement from "./pages/AdminDashboard/enrollmentManagement";
-import AssignmentManagement from "./pages/AdminDashboard/assignmentManagment";
+import StudentManagement from "./pages/AdminDashboard/StudentManagement";
+import TeacherManagement from "./pages/AdminDashboard/TeacherManagement";
+import CourseManagement from "./pages/AdminDashboard/CourseManagement";
+import EnrollmentManagement from "./pages/AdminDashboard/EnrollmentManagement";
+import AssignmentManagement from "./pages/AdminDashboard/AssignmentManagment";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import StudentMarks from "./pages/StudentMarks";
 

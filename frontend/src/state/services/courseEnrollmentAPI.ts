@@ -9,6 +9,13 @@ export const courseEnrollmentAPI = baseAPI.injectEndpoints({
       }),
       providesTags: ["CourseEnrollment"],
     }),
+    getCourseStudents: builder.query<any[], number>({
+      query: (courseId) => ({
+        url: `/courseEnrollment/getCourseStudents/${courseId}`,
+        method: "GET",
+      }),
+      providesTags: ["CourseEnrollment", "Mark"], // Also provides Marks since we display them
+    }),
     enrollStudent: builder.mutation<void, { courseId: number; studentId: number }>({
       query: (data) => ({
         url: `/courseEnrollment/enrollStudent`,
@@ -29,6 +36,7 @@ export const courseEnrollmentAPI = baseAPI.injectEndpoints({
 
 export const {
   useGetEnrolledCoursesQuery,
+  useGetCourseStudentsQuery,
   useEnrollStudentMutation,
   useUnenrollStudentMutation,
 } = courseEnrollmentAPI;

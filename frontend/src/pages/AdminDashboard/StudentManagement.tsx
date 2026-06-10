@@ -4,11 +4,11 @@ import {
   useDeleteUserMutation,
   useUpdateUserMutation,
 } from "../../state/services/userAPI";
-import { DataGrid } from "@mui/x-data-grid";
-import type { GridColDef } from "@mui/x-data-grid";
 import { Dialog } from "@mui/material";
-import { Trash2, Edit2, Loader2, UserPlus, Users } from "lucide-react";
-import CreateUserForm from "../../components/Admin/userForm";
+import { UserPlus, Users } from "lucide-react";
+import Loader from "../../components/Loader";
+import CreateUserForm from "../../components/Admin/UserForm";
+import UsersGrid from "../../components/Admin/UsersGrid";
 import type { UserType } from "../../types";
 
 const StudentManagement = () => {
@@ -25,11 +25,7 @@ const StudentManagement = () => {
   const [editEmail, setEditEmail] = useState("");
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
@@ -78,50 +74,6 @@ const StudentManagement = () => {
     }
   };
 
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "name", headerName: "Name", flex: 1, minWidth: 150 },
-    { field: "email", headerName: "Email Address", flex: 1.2, minWidth: 200 },
-    {
-      field: "createdAt",
-      headerName: "Registered Date",
-      width: 180,
-      valueGetter: (value) => {
-        if (!value) return "N/A";
-        return new Date(value).toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        });
-      },
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 120,
-      sortable: false,
-      renderCell: (params) => {
-        const user = params.row as UserType;
-        return (
-          <div className="flex items-center space-x-2 h-full">
-            <button
-              onClick={() => handleEditOpen(user)}
-              className="p-1.5 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all cursor-pointer"
-            >
-              <Edit2 className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => handleDelete(user.id, user.name)}
-              className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-all cursor-pointer"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
-        );
-      },
-    },
-  ];
-
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -148,32 +100,13 @@ const StudentManagement = () => {
         </button>
       </div>
 
-      {/* Table Container */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden">
-        <div className="h-[550px] w-full">
-          <DataGrid
-            rows={students}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
-              },
-            }}
-            pageSizeOptions={[5, 10, 20]}
-            disableRowSelectionOnClick
-            className="border-none"
-            sx={{
-              "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: "#f9fafb",
-                borderBottom: "1px solid #f3f4f6",
-              },
-              "& .MuiDataGrid-cell": {
-                borderBottom: "1px solid #f9fafb",
-              },
-            }}
-          />
-        </div>
-      </div>
+      {/* Shared Users Grid (with built-in search) */}
+      <UsersGrid
+        users={students}
+        accentColor="blue"
+        onEdit={handleEditOpen}
+        onDelete={handleDelete}
+      />
 
       {/* Register Student Modal */}
       <Dialog

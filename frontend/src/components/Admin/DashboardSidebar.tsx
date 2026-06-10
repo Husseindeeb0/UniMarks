@@ -12,7 +12,11 @@ import {
   Loader2,
 } from "lucide-react";
 
-const DashboardSidebar = () => {
+interface DashboardSidebarProps {
+  onClose?: () => void;
+}
+
+const DashboardSidebar = ({ onClose }: DashboardSidebarProps) => {
   const { user } = useAuth();
   const [logoutMutation, { isLoading: isLoggingOut }] = useLogoutMutation();
   const navigate = useNavigate();
@@ -79,6 +83,7 @@ const DashboardSidebar = () => {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={onClose}
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${
                   isActive

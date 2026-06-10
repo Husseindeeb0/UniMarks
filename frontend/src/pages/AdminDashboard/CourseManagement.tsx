@@ -7,8 +7,9 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { Dialog } from "@mui/material";
-import { Trash2, Edit2, Loader2, BookOpen, Plus } from "lucide-react";
-import CreateCourseForm from "../../components/Admin/courseForm";
+import { Trash2, Edit2, BookOpen, Plus, Search } from "lucide-react";
+import Loader from "../../components/Loader";
+import CreateCourseForm from "../../components/Admin/CourseForm";
 
 const CourseManagement = () => {
   const {
@@ -29,12 +30,11 @@ const CourseManagement = () => {
   const [editName, setEditName] = useState("");
   const [editCode, setEditCode] = useState("");
 
+  // Search State
+  const [courseSearch, setCourseSearch] = useState("");
+
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="w-10 h-10 animate-spin text-emerald-600" />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
@@ -157,10 +157,29 @@ const CourseManagement = () => {
       </div>
 
       {/* Table Container */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden">
-        <div className="h-[550px] w-full">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden space-y-4">
+        {/* Search Bar */}
+        <div className="relative max-w-xs">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+            <Search className="w-4 h-4" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search by name or code..."
+            value={courseSearch}
+            onChange={(e) => setCourseSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-1.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors text-sm"
+          />
+        </div>
+        <div className="h-[500px] w-full">
           <DataGrid
-            rows={courses || []}
+            rows={(courses || []).filter((c) => {
+              const q = courseSearch.toLowerCase();
+              return (
+                c.name.toLowerCase().includes(q) ||
+                c.code.toLowerCase().includes(q)
+              );
+            })}
             columns={columns}
             initialState={{
               pagination: {

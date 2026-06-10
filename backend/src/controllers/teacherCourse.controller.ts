@@ -82,14 +82,8 @@ export const getTeacherCourses = async (req: Request, res: Response) => {
       include: {
         course: {
           include: {
-            courseEnrollments: {
-              include: {
-                student: {
-                  include: {
-                    marks: true
-                  }
-                }
-              }
+            _count: {
+              select: { courseEnrollments: true }
             }
           }
         },
