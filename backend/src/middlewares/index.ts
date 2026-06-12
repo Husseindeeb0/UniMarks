@@ -17,6 +17,9 @@ export async function verifyJWT(
     const refreshToken = req.cookies.refresh_token;
 
     if (!accessToken && !refreshToken) {
+      if (req.path === "/getMe") {
+        return res.status(200).json(null);
+      }
       return res.status(401).json({
         state: "AUTH_REQUIRED",
         message: "Authentication required",
@@ -62,6 +65,9 @@ export async function verifyJWT(
       !("email" in decoded) ||
       !("role" in decoded)
     ) {
+      if (req.path === "/getMe") {
+        return res.status(200).json(null);
+      }
       return res.status(401).json({
         state: "INVALID_TOKEN",
         message: "Invalid or expired session",

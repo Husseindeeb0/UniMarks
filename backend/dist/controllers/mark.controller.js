@@ -93,7 +93,7 @@ const deleteMark = async (req, res) => {
 };
 exports.deleteMark = deleteMark;
 const getStudentMarks = async (req, res) => {
-    const { studentId } = req.body;
+    const studentId = req.params.studentId || req.body.studentId;
     if (!studentId) {
         return res.status(400).json({ message: "All fields are required" });
     }

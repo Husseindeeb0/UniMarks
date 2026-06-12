@@ -11,6 +11,9 @@ async function verifyJWT(req, res, next) {
         let accessToken = req.cookies.access_token;
         const refreshToken = req.cookies.refresh_token;
         if (!accessToken && !refreshToken) {
+            if (req.path === "/getMe") {
+                return res.status(200).json(null);
+            }
             return res.status(401).json({
                 state: "AUTH_REQUIRED",
                 message: "Authentication required",
@@ -44,6 +47,9 @@ async function verifyJWT(req, res, next) {
             !("id" in decoded) ||
             !("email" in decoded) ||
             !("role" in decoded)) {
+            if (req.path === "/getMe") {
+                return res.status(200).json(null);
+            }
             return res.status(401).json({
                 state: "INVALID_TOKEN",
                 message: "Invalid or expired session",
@@ -54,6 +60,9 @@ async function verifyJWT(req, res, next) {
     }
     catch (error) {
         console.error("Auth middleware error:", error);
+        if (req.path === "/getMe") {
+            return res.status(200).json(null);
+        }
         return res.status(401).json({
             state: "AUTH_FAILED",
             message: "Authentication failed",

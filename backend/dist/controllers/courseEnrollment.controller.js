@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getEnrolledCourses = exports.unenrollStudent = exports.enrollStudent = void 0;
+exports.getCourseStudents = exports.getEnrolledCourses = exports.unenrollStudent = exports.enrollStudent = void 0;
 const prisma_1 = __importDefault(require("../config/prisma"));
 const enrollStudent = async (req, res) => {
     const { courseId, studentId } = req.body;
@@ -73,3 +73,26 @@ const getEnrolledCourses = async (req, res) => {
     }
 };
 exports.getEnrolledCourses = getEnrolledCourses;
+const getCourseStudents = async (req, res) => {
+    const { courseId } = req.params;
+    try {
+        const enrollments = await prisma_1.default.courseEnrollment.findMany({
+            where: { courseId: Number(courseId) },
+            include: {
+                student: {
+                    include: {
+                        marks: {
+                            where: { courseId: Number(courseId) }
+                        }
+                    }
+                }
+            }
+        });
+        res.status(200).json(enrollments);
+    }
+    catch (error) {
+        console.error("Error getting course students:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+exports.getCourseStudents = getCourseStudents;

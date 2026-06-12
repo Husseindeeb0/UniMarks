@@ -18,11 +18,12 @@ const createUser = async (req, res) => {
         if (exists) {
             return res.status(400).json({ message: "User already exists" });
         }
+        const hashedPassword = await bcrypt_1.default.hash(password, 10);
         const user = await prisma_1.default.user.create({
             data: {
                 name,
                 email,
-                password,
+                password: hashedPassword,
                 role: role,
             },
         });
@@ -92,10 +93,7 @@ const deleteUser = async (req, res) => {
 exports.deleteUser = deleteUser;
 const getAll = async (req, res) => {
     try {
-        const role = req.query.role || "STUDENT";
-        const users = await prisma_1.default.user.findMany({
-            where: { role: role },
-        });
+        const users = await prisma_1.default.user.findMany();
         res.status(200).json(users);
     }
     catch (error) {

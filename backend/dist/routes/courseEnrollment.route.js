@@ -10,4 +10,5 @@ const router = express_1.default.Router();
 router.post("/enrollStudent", middlewares_1.verifyJWT, courseEnrollment_controller_1.enrollStudent);
 router.delete("/unenrollStudent/:enrollmentId", middlewares_1.verifyJWT, courseEnrollment_controller_1.unenrollStudent);
 router.get("/getEnrolledCourses/:studentId", middlewares_1.verifyJWT, courseEnrollment_controller_1.getEnrolledCourses);
+router.get("/getCourseStudents/:courseId", middlewares_1.verifyJWT, courseEnrollment_controller_1.getCourseStudents);
 exports.default = router;

@@ -17,11 +17,11 @@ const login = async (req, res) => {
             where: { email },
         });
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: "Invalid Credentials" });
         }
         const passwordMatch = await bcrypt_1.default.compareSync(password, user.password);
-        if (!passwordMatch || user.email !== email) {
-            return res.status(401).json({ message: "Invalid credentials" });
+        if (!passwordMatch) {
+            return res.status(401).json({ message: "Invalid Credentials" });
         }
         const accessToken = (0, utils_1.generateToken)(user);
         const refreshToken = (0, utils_1.generateRefreshToken)(user);

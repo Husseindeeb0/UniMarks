@@ -74,7 +74,13 @@ const getTeacherCourses = async (req, res) => {
                 teacherId: Number(teacherId),
             },
             include: {
-                course: true,
+                course: {
+                    include: {
+                        _count: {
+                            select: { courseEnrollments: true }
+                        }
+                    }
+                },
             },
         });
         res.status(200).json(teacherCourses);

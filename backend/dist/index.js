@@ -13,9 +13,13 @@ const teacherCourse_route_1 = __importDefault(require("./routes/teacherCourse.ro
 const mark_route_1 = __importDefault(require("./routes/mark.route"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
+const corsOptions_1 = __importDefault(require("./config/corsOptions"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
+const PORT = process.env.PORT || 3000;
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)(corsOptions_1.default));
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 (0, dbConnect_1.default)();
 app.use("/auth", auth_route_1.default);
@@ -24,6 +28,6 @@ app.use("/course", course_route_1.default);
 app.use("/courseEnrollment", courseEnrollment_route_1.default);
 app.use("/teacherCourse", teacherCourse_route_1.default);
 app.use("/mark", mark_route_1.default);
-app.listen(3000, () => {
-    console.log(`Server is running on port 3000`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
